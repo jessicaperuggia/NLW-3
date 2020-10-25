@@ -10,4 +10,4 @@ const mapIcon = L.icon({
     popupAnchor: [0, -60]
 })
 
-export default mapIcon
+export default mapIcon;
