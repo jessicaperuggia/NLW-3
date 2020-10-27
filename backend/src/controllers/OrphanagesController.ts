@@ -10,7 +10,7 @@ export default {
         const orphanagesRepository = getRepository(Orphanage);
 
         const orphanages = await orphanagesRepository.find({
-            relations: ['images']
+            relations: ['images'],
         });
 
         return response.json(orphanageView.renderMany(orphanages));
@@ -21,7 +21,7 @@ export default {
         const orphanagesRepository = getRepository(Orphanage);
 
         const orphanage = await orphanagesRepository.findOneOrFail(id, {
-            relations: ['images']
+            relations: ['images'],
         });
 
         return response.json(orphanageView.render(orphanage));
@@ -70,16 +70,12 @@ export default {
             }))
         });
 
-        const finalData = schema.cast(data);
+        await schema.validate(data, { abortEarly: false });
 
-        await schema.validate(data, {
-            abortEarly: false,
-        });
-
-        const orphanage = orphanagesRepository.create(finalData);
+        const orphanage = orphanagesRepository.create(data);
 
         await orphanagesRepository.save(orphanage);
 
-        return response.json(orphanage);
+        return response.status(201).json(orphanage);
     }
 };
